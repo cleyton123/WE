@@ -10,7 +10,12 @@ function About () {
         <p><strong>Nomes da equipe : </strong>Cleyton,Italo e Elion</p>
         <p><strong>Link do repositório: </strong> https://github.com/cleyton123/web.git</p>
       
+        <div>
         <Link to={"/"}>Home</Link>
+      </div>
+      <div>
+        <Link to={"/cadastro"}>CadastroForm</Link>
+      </div>
     </div>
     )
 }

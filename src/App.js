@@ -1,23 +1,28 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import GerenciamentoItens from './formulário cadastro/gerenciamento';
-import DOM from './formulário cadastro/DOM/elementos';
-import { BrowserRouter,Routes,Route } from "react-router-dom";
-import Home from "./Home";
-import About from "./About";
+import React, { useState } from 'react';
+import CadastroForm from './formulário cadastro/Cadastroform';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import NotFound from './pages/404';
 
+function App() {
+  const [items, setItems] = useState([]);
 
-ReactDOM.render(<GerenciamentoItens />, document.getElementById('root'));
-function App () {
-  return(
+  const handleCadastro = (formData) => {
+  
+    setItems([...items, formData]);
+  };
+
+  return (
     <BrowserRouter>
-     <Routes>
-       <Route path='/' element={<Home/>}/>
-       <Route path='/About' element={<About/>}/>
-       <Route path='/gerenciamento' element={<GerenciamentoItens/>}/>
-       <Route path='/DOM' element={<DOM/>}/>
-     </Routes>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/About' element={<About />} />
+        <Route path='/cadastro' element={<CadastroForm onCadastro={handleCadastro} items={items} />} />
+         
+         <Route path='*' element={<NotFound />} />
+      </Routes>
     </BrowserRouter>
-  )
+  );
 }
 export default App;
