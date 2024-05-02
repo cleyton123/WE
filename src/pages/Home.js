@@ -11,7 +11,7 @@ function Home (){
         <Link to={"/About"}>About</Link>
       </div>
       <div>
-        <Link to={"/cadastro"}>CadastroForm</Link>
+        <Link to={"/cadastro"}>Cadastro</Link>
       </div>
    </div>
    );

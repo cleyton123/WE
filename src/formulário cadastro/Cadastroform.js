@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import './cadastro.css';
 
-const CadastroForm = ({ onCadastro, items }) => {
+const CadastroForm = ({ items }) => {
   const [formData, setFormData] = useState({
     nome: '',
     email: '',
@@ -9,6 +10,7 @@ const CadastroForm = ({ onCadastro, items }) => {
   });
   const [erros, setErros] = useState({});
   const [enviado, setEnviado] = useState(false);
+  const [erroEnvio, setErroEnvio] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,7 +25,7 @@ const CadastroForm = ({ onCadastro, items }) => {
     }
     if (!formData.email.trim()) {
       newErrors.email = 'Campo obrigatório';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    } else if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(formData.email)) {
       newErrors.email = 'E-mail inválido';
     }
     if (!formData.senha.trim()) {
@@ -33,15 +35,9 @@ const CadastroForm = ({ onCadastro, items }) => {
     }
     setErros(newErrors);
 
-
     if (Object.keys(newErrors).length === 0) {
-      
       setEnviado(true);
-      onCadastro(formData);
-     
-      const newItem = { nome: formData.nome, email: formData.email, senha: formData.senha };
-      items.push(newItem);
-      
+      console.log('Cadastro enviado:', formData);
       setFormData({
         nome: '',
         email: '',
@@ -52,51 +48,50 @@ const CadastroForm = ({ onCadastro, items }) => {
 
   return (
     <div>
-      <h2>Cadastro</h2>
-      {enviado ? (
-        <p>Cadastro enviado com sucesso!</p>
-      ) : (
-        <form onSubmit={handleSubmit}>
-          <label>
-            Nome:
-            <input
-              type="text"
-              name="nome"
-              value={formData.nome}
-              onChange={handleChange}
-            />
-            {erros.nome && <span>{erros.nome}</span>}
-          </label>
-          <label>
-            E-mail:
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-            />
-            {erros.email && <span>{erros.email}</span>}
-          </label>
-          <label>
-            Senha:
-            <input
-              type="password"
-              name="senha"
-              value={formData.senha}
-              onChange={handleChange}
-            />
-            {erros.senha && <span>{erros.senha}</span>}
-          </label>
-          <button type="submit">Enviar</button>
-        </form>
-      )}
-      <h2>Itens</h2>
-      <ul>
-        {items.map((item, index) => (
-          <li key={index}>{item.nome} - {item.email} - {item.senha}</li>
-        ))}
-      </ul>
+      <h2 className="cad">Cadastro</h2>
+      {enviado && <p className="sucesso">Cadastro realizado com sucesso!</p>}
+      {erroEnvio && <p className="erro">{erroEnvio}</p>}
+      <form action='http://localhost:3000/' method='POST' onSubmit={handleSubmit} className="form">
+        <label>
+          Nome:
+          <input
+            type="text"
+            name="nome"
+            value={formData.nome}
+            onChange={handleChange}
+            className={erros.nome ? 'erro' : ''}
+          />
+          {erros.nome && <span className="erro">{erros.nome}</span>}
+        </label>
+        <label>
+          E-mail:
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            className={erros.email ? 'erro' : ''}
+          />
+          {erros.email && <span className="erro">{erros.email}</span>}
+        </label>
+        <label>
+          Senha:
+          <input
+            type="password"
+            name="senha"
+            value={formData.senha}
+            onChange={handleChange}
+            className={erros.senha ? 'erro' : ''}
+          />
+          {erros.senha && <span className="erro">{erros.senha}</span>}
+        </label>
+        <button type="submit">Enviar</button>
+       
       <Link to={"/"}>Home</Link>
+    
+      </form>
+   
+     
     </div>
   );
 };
